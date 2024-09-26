@@ -3,66 +3,53 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Stack;
 
-// 클래스
+// [클래스] 메인
 public class Main_3015_오아시스재결합_P5 {
 	
-	// 메인
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static long result = 0; // 125_000_250_000 까지 가능 하므로 long타입 (같은 키 50만명)
+	
+	// [메서드] 메인
 	public static void main(String[] args) throws IOException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine()); // 사람의 수 (1 ~ 500,000)
 		
-		// 1 ~ 500,000
-		int N = Integer.parseInt(br.readLine());
+		Stack<Integer> stack = new Stack<>();
 		
-		// 1 ~ 2^31
-		long[] arr = new long[N];
-		for (int i = 0; i < N; i++) {
-			arr[i] = Long.parseLong(br.readLine());
-		}
-		
-		long result = 0;
-		
-		Stack<Long> stack = new Stack<>();
-		for (int i = 0; i < N; i++) {
-			while (!stack.isEmpty() && stack.peek() < arr[i]) {
-				long num = stack.pop();
-				long count = 1;
-				while (!stack.isEmpty() && stack.peek() == num) {
+		for (int i = 0; i < N; i++) { // 키 (2^31 이하)
+			int curr_Num = Integer.parseInt(br.readLine());
+			while (!stack.isEmpty() && stack.peek() < curr_Num) {
+				int pop_Num = stack.pop();
+				int pop_Count = 1; // 동일한 키 카운트
+				while (!stack.isEmpty() && stack.peek() == pop_Num) {
 					stack.pop();
-					count++;
+					pop_Count++;
 				}
-				if (count == 1) {
-					result += stack.isEmpty()? 1 : 2;
-				} else {
-					result += stack.isEmpty()? counter(1, count) : counter(2, count);
+				while (pop_Count != 0) {
+					result += stack.isEmpty() ? pop_Count : pop_Count+1;
+					pop_Count--;
 				}
 			}
-			stack.push(arr[i]);
+			stack.push(curr_Num);
 		}
 		
-		while (!stack.isEmpty()) {
-			long num = stack.pop();
-			long count = 1;
-			while (!stack.isEmpty() && stack.peek() == num) {
+		while (!stack.isEmpty()) { // 잔여스택 처리
+			int pop_Num = stack.pop();
+			int pop_Count = 1; // 동일한 키 카운트
+			while (!stack.isEmpty() && stack.peek() == pop_Num) {
 				stack.pop();
-				count++;
+				pop_Count++;
 			}
-			if (count == 1) {
-				result += stack.isEmpty()? 0 : 1;
-			} else {
-				result += stack.isEmpty()? counter(1, count-1) : counter(1, count);
+			while (pop_Count != 0) {
+				result += stack.isEmpty() ? pop_Count-1 : pop_Count;
+				pop_Count--;
 			}
 		}
 		
+		// 출력
 		System.out.println(result);
 		
-	} // 메인 끝
+	} // [메서드] 메인
 	
-	static long counter(long num, long count) {
-		if (count == 1) {
-			return num;
-		}
-		return counter(num, count-1) + (count+num-1);
-	}
 	
-} // 클래스 끝
+} // [클래스] 메인
