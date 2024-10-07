@@ -30,13 +30,13 @@ public class Main_2263_트리의순회_G1 {
 		st = new StringTokenizer(br.readLine(), " ");
 		for (int i = 0; i < N; i++) { postOrder[i] = Integer.parseInt(st.nextToken()); }
 		
-		append_Postorder(0, N-1, 0, N-1);
+		append_Preorder(0, N-1, 0, N-1);
 		
 		System.out.println(sb);
 	} // [메서드] main
 	
-	// [메서드] append_Postorder
-	private static void append_Postorder(int in_S, int in_E, int po_S, int po_E) {
+	// [메서드] append_Preorder
+	private static void append_Preorder(int in_S, int in_E, int po_S, int po_E) {
 		if (in_S <= in_E && po_S <= po_E) {
 			sb.append(postOrder[po_E]).append(" ");
 			
@@ -49,9 +49,9 @@ public class Main_2263_트리의순회_G1 {
 			
 			int po_M = po_S + (in_M-in_S);
 			
-			append_Postorder(in_S, in_M-1, po_S, po_M-1);
-			append_Postorder(in_M+1, in_E, po_M, po_E-1);
+			append_Preorder(in_S, in_M-1, po_S, po_M-1);
+			append_Preorder(in_M+1, in_E, po_M, po_E-1);
 		}
-	} // [메서드] append_Postorder
+	} // [메서드] append_Preorder
 	
 } // [클래스] Main
