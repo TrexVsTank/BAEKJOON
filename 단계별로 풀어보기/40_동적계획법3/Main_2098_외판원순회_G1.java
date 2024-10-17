@@ -29,6 +29,7 @@ public class Main_2098_외판원순회_G1 {
 	static int status;
 	static int tf;
 	static int ts;
+	
 	// [main]
 	public static void main(String[] args) throws IOException {
 		
