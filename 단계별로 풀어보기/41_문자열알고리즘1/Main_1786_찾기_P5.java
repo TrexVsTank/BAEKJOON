@@ -51,7 +51,7 @@ public class Main_1786_찾기_P5 {
 		}
 	} // [KMP]
 	
-	// [getK]
+	// [get LPS]
 	private static void getLPS() {
 		int idx = 0;
 		for (int k = 1; k < lenW; k++) {
@@ -63,7 +63,7 @@ public class Main_1786_찾기_P5 {
 				LPS[k] = idx;
 			}
 		}
-	} // [getK]
+	} // [get LPS]
 	
 	// [INPUT]
 	private static void input() throws IOException {
