@@ -33,6 +33,7 @@ public class Main_3977_축구전술_P4 {
 	static int S;
 	static List<Set<Integer>> linkAt;
 	static List<Set<Integer>> linkTo;
+	static int startSCC;
 	
 	// [MAIN]
 	public static void main(String[] args) throws IOException {
@@ -42,33 +43,36 @@ public class Main_3977_축구전술_P4 {
 		// TEST CASE
 		for (int t = 0; t < T; t++) {
 			
-			st = new StringTokenizer(br.readLine(), " ");
-			
-			N = Integer.parseInt(st.nextToken());
-			
-			M = Integer.parseInt(st.nextToken());
-			
-			link = new ArrayList<>();
-			for (int n = 0; n < N; n++) {
-				link.add(new ArrayList<>());
-			}
-			for (int m = 0; m < M; m++) {
+			// SET 1
+			{
 				st = new StringTokenizer(br.readLine(), " ");
-				int at = Integer.parseInt(st.nextToken());
-				int to = Integer.parseInt(st.nextToken());
-				link.get(at).add(to);
-			}
-			br.readLine();
-			
-			stack = new Stack<>();
-			
-			id = 0;
-			
-			idArray = new int[N];
-			
-			dead = new boolean[N];
-			
-			SCC = new ArrayList<>();
+				
+				N = Integer.parseInt(st.nextToken());
+				
+				M = Integer.parseInt(st.nextToken());
+				
+				link = new ArrayList<>();
+				for (int n = 0; n < N; n++) {
+					link.add(new ArrayList<>());
+				}
+				for (int m = 0; m < M; m++) {
+					st = new StringTokenizer(br.readLine(), " ");
+					int at = Integer.parseInt(st.nextToken());
+					int to = Integer.parseInt(st.nextToken());
+					link.get(at).add(to);
+				}
+				br.readLine();
+				
+				stack = new Stack<>();
+				
+				id = 0;
+				
+				idArray = new int[N];
+				
+				dead = new boolean[N];
+				
+				SCC = new ArrayList<>();
+			} // SET 1
 			
 			// GET SCC
 			for (int n = 0; n < N; n++) {
@@ -77,51 +81,55 @@ public class Main_3977_축구전술_P4 {
 				}
 			}
 			
-			S = SCC.size();
-			
-			sccArray = new int[N];
-			
-			for (int s = 0; s < S; s++) {
-				for (int num : SCC.get(s)) {
-					sccArray[num] = s;
-				}
-			}
-			
-			linkAt = new ArrayList<>();
-			
-			linkTo = new ArrayList<>();
-			
-			for (int s = 0; s < S; s++) {
-				linkAt.add(new HashSet<>());
-				linkTo.add(new HashSet<>());
-			}
-			
-			for (int at = 0; at < N; at++) {
-				int AT = sccArray[at];
-				for (int to : link.get(at)) {
-					int TO = sccArray[to];
-					if (AT == TO) {
-						continue;
+			// SET 2
+			{
+				S = SCC.size();
+				
+				sccArray = new int[N];
+				
+				for (int s = 0; s < S; s++) {
+					for (int num : SCC.get(s)) {
+						sccArray[num] = s;
 					}
-					linkAt.get(TO).add(AT);
-					linkTo.get(AT).add(TO);
 				}
-			}
-			
-			dead = new boolean[S];
-			
-			int startSCC = 0;
-			
-			while (!linkAt.get(startSCC).isEmpty()) {
-				for (int next : linkAt.get(startSCC)) {
-					startSCC = next;
-					break;
+				
+				linkAt = new ArrayList<>();
+				
+				linkTo = new ArrayList<>();
+				
+				for (int s = 0; s < S; s++) {
+					linkAt.add(new HashSet<>());
+					linkTo.add(new HashSet<>());
 				}
-			}
+				
+				for (int at = 0; at < N; at++) {
+					int AT = sccArray[at];
+					for (int to : link.get(at)) {
+						int TO = sccArray[to];
+						if (AT == TO) {
+							continue;
+						}
+						linkAt.get(TO).add(AT);
+						linkTo.get(AT).add(TO);
+					}
+				}
+				
+				dead = new boolean[S];
+				
+				startSCC = 0;
+				
+				while (!linkAt.get(startSCC).isEmpty()) {
+					for (int next : linkAt.get(startSCC)) {
+						startSCC = next;
+						break;
+					}
+				}
+			} // SET 2
 			
 			// SCC DOMINO
 			sccDomino(startSCC);
 			
+			// APPEND OUTPUT
 			if (S == 0) {
 				Collections.sort(SCC.get(startSCC));
 				for (int num : SCC.get(startSCC)) {
